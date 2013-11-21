@@ -1,20 +1,29 @@
 #!/usr/bin/env python
 
+import argparse
 import sys
+
 import fiona
 from shapely.geometry import mapping
 from shapely.wkt import loads
 
-infile = sys.argv[1]
-outfile = sys.argv[2]
 
-poly = loads(open(infile).read())
+def main():
+    parser = argparse.ArgumentParser(description='Convert wkt to shp')
+    parser.add_argument('infile', help='the existing wkt file')
+    parser.add_argument('outfile', help='the shp file to be created')
+    args = parser.parse_args()
 
-schema = {
-        'geometry': 'Polygon',
-        'properties': {'id': 'int'}
-        }
+    poly = loads(open(args.infile).read())
 
-with fiona.open(outfile, 'w', 'ESRI Shapefile', schema) as c:
-    c.write({'geometry': mapping(poly), 'properties': {'id': 1}})
+    schema = {
+            'geometry': 'Polygon',
+            'properties': {'id': 'int'}
+            }
 
+    with fiona.open(args.outfile, 'w', 'ESRI Shapefile', schema) as c:
+        c.write({'geometry': mapping(poly), 'properties': {'id': 1}})
+
+
+if __name__ == '__main__':
+    main()

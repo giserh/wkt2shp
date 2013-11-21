@@ -14,6 +14,5 @@ setup(
     install_requires=[
         "Fiona == 1.0.2",
         "Shapely == 1.2.18",
-        "cement == 2.0.2",
     ],
 )
